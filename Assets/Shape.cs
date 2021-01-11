@@ -58,9 +58,9 @@ public class Shape : MonoBehaviour
 
     }
 
-    public void ChangeShape()
+    public void ChangeShape(int id)
     {
-        GameManager.Instance.ChangeCurrentShape();
+        GameManager.Instance.ChangeCurrentShape(id);
 
         var vertices2D = GameManager.Instance.GetCurrentVertices();
 
@@ -73,13 +73,18 @@ public class Shape : MonoBehaviour
          .Select(i => this.myMesh.colors[0])
          .ToArray();
 
-        this.myMesh.vertices = vertices3D;
-        this.myMesh.triangles = indices;
-        this.myMesh.colors = colors;
-        this.myMesh.RecalculateNormals();
-        this.myMesh.RecalculateBounds();
-        this.GetComponent<MeshCollider>().sharedMesh = this.myMesh;
-
+        var mesh = new Mesh
+        {
+            vertices = vertices3D,
+            triangles = indices,
+            colors = colors
+        };
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+        this.GetComponent<MeshCollider>().sharedMesh = mesh;
+        var filter = gameObject.GetComponent<MeshFilter>();
+        filter.mesh = mesh;
+        this.myMesh = mesh;
 
     }
 
@@ -107,10 +112,7 @@ public class Shape : MonoBehaviour
         //{
         //    this.ChangeColor();
         //}
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            this.ChangeShape();
-        }
+
 
 
         Vector3 touchPoint = new Vector3();

@@ -9,14 +9,14 @@ public class GameManager :Singleton<GameManager>
 
     //public Vector2[] vertices2D;
 
-    private Shape currentShape;
-    public enum Shape { Hexagon, Triangle, Rectangle, Circle, IPolygon}
-    private Dictionary<Shape, Vector2[]> ShapeList = new Dictionary<Shape, Vector2[]>();
+    private ShapeType currentShape;
+    public enum ShapeType { Hexagon, Triangle, IPolygon}
+    private Dictionary<ShapeType, Vector2[]> ShapeList = new Dictionary<ShapeType, Vector2[]>();
 
     protected void Awake()
     {
-        this.currentShape = Shape.Hexagon;
-        this.ShapeList[Shape.IPolygon] = new Vector2[] {
+        this.currentShape = ShapeType.Hexagon;
+        this.ShapeList[ShapeType.IPolygon] = new Vector2[] {
             new Vector2(0,0),
             new Vector2(0,1),
             new Vector2(1,1),
@@ -31,7 +31,7 @@ public class GameManager :Singleton<GameManager>
             new Vector2(3,0),
         };
         // add more shape
-        this.ShapeList[Shape.Hexagon] = new Vector2[] {
+        this.ShapeList[ShapeType.Hexagon] = new Vector2[] {
             new Vector2(-1f,0),
             new Vector2(-0.5f,0.866f),
             new Vector2(0.5f,0.866f),
@@ -41,6 +41,13 @@ public class GameManager :Singleton<GameManager>
            
         };
 
+        this.ShapeList[ShapeType.Triangle] = new Vector2[] {
+            new Vector2(-2f,0),
+            new Vector2(2f,0),
+            new Vector2(0f,1.5f),
+
+        };
+
     }
 
     public Vector2[] GetCurrentVertices()
@@ -48,9 +55,10 @@ public class GameManager :Singleton<GameManager>
         return this.ShapeList[this.currentShape];
     }
 
-    public void ChangeCurrentShape()
+    public void ChangeCurrentShape(int id)
     {
-        this.currentShape = Shape.IPolygon;
+       
+        this.currentShape = (ShapeType)id;
     }
 
 
